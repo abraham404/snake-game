@@ -29,7 +29,7 @@ useEffect(() => {
 return (
     <>
      
-     <h2 style={{fontSize: '35px'}}>Snake Game 🐍</h2>
+     <h2 style={{fontSize: '35px',  color: 'white'}}>Snake Game 🐍</h2>
 
      <SnakeCanvas isRunning={isRunning} direction={direction} />
      <div style={{marginTop: '20px'}} className="btn-rows">
@@ -54,7 +54,7 @@ return (
           }} 
         />
         </button>
-        <button style={{width: '77px', height: '50px'}} onClick={handleIsRunning}>{isRunning ? 'Stop' : 'Start'}</button>
+        <button style={{width: '77px', height: '50px', color: 'white'}} onClick={handleIsRunning}>{isRunning ? 'Stop' : 'Start'}</button>
         <button onClick={() => setDirection('RIGHT')}>
         <img 
           src={right} 

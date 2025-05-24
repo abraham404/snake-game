@@ -5,6 +5,7 @@
   text-align: center;
 }
 
+
 .logo {
   height: 6em;
   padding: 1.5em;
@@ -48,4 +49,8 @@
   margin-top: 15px;
   justify-content: center;
   gap: 15px;
+}
+
+button{
+  background-color: #1b1a1b;
 }
