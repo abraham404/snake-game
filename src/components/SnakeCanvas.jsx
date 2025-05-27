@@ -1,21 +1,22 @@
 // src/components/SnakeCanvas.js
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect, useState, use } from 'react';
 
 
 
 function SnakeCanvas({ isRunning, direction }) {
   const canvasRef = useRef(null);
   const intervalRef = useRef(null);
+  const [resetFlag, setResetFlag] = useState(false);
+  const [score, setScore] = useState(0);  
   const gameOverRef = useRef(false);
-  const [resetFlag, setResetFlag] = useState(false);  
   const isRunningRef = useRef(isRunning);
+  localStorage.setItem("playScore", localStorage.getItem("playScore") || 0);
 
-  //Canves size
+
+  //Canva s size
   const squareSize = 20;
   const canvasWidth = 340;
   const canvasHeight = 400;
-
-
 
 
   //initial
@@ -23,7 +24,6 @@ function SnakeCanvas({ isRunning, direction }) {
     {x: 0, y: 9},
     {x: 1, y: 9},
   ]);
-
 
   
   const getRandomColor = () => {
@@ -44,7 +44,6 @@ function SnakeCanvas({ isRunning, direction }) {
     };
   };
   
-  
   const [food, setFood] = useState({
     x: Math.floor(Math.random() * (canvasWidth / squareSize)),
     y: Math.floor(Math.random() * (canvasHeight / squareSize)),
@@ -52,8 +51,12 @@ function SnakeCanvas({ isRunning, direction }) {
   });
   
   const resetGame = () => {
+    let scoreStorage = parseInt(localStorage.getItem("playScore")); // Para enteros
     clearInterval(intervalRef.current);
+    
     gameOverRef.current = false;
+    
+    setScore(0);
     setSnake([
       { x: 0, y: 9 },
       { x: 1, y: 9 }
@@ -65,6 +68,8 @@ function SnakeCanvas({ isRunning, direction }) {
     });
 
     setResetFlag(prev => !prev);
+    
+
   };
 
 
@@ -113,12 +118,22 @@ useEffect(() => {
   
             // Usamos un timeout para ejecutar el alert fuera de la lógica de React
             setTimeout(() => {
-              alert("Game Over");
+
+              let scoreLocalStorage = parseInt(localStorage.getItem("playScore"));
+
+              if (score > scoreLocalStorage){
+                localStorage.setItem("playScore", score)
+              }
+
+
+              alert(`Game Over your score: ${score} best score: ${scoreLocalStorage}`);
+
               resetGame();
             }, 0);
   
             return prev; // <- Detiene avance del estado
           }
+
           /*
           const newSnake = [...prev.slice(1), newHead];
           return newSnake;
@@ -131,6 +146,8 @@ useEffect(() => {
             ...generateRandomFood(),
             color: getRandomColor()
           });
+          setScore(prev => prev + 5);
+
         } else {
           newSnake = [...prev.slice(1), newHead]; // movimiento normal
         }
@@ -179,12 +196,17 @@ useEffect(() => {
 
 
   return (
-    <canvas
-      ref={canvasRef}
-      width={canvasWidth}
-      height={canvasHeight}
-      style={{ border: '4px solid white' }}
-    />
+    
+    <>
+      <canvas
+        ref={canvasRef}
+        width={canvasWidth}
+        height={canvasHeight}
+        style={{ border: '4px solid white' }}
+      />
+      <p style={{color: '#39FF14'}}>Score {score}</p>
+    </>
+    
 
     
   );

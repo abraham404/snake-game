@@ -10,6 +10,7 @@ import right from '../src/assets/images/chevron-right.svg';
 function App() {
   const [isRunning, setIsRunnig] = useState(false);
   const [direction, setDirection] = useState('RIGHT');
+  const [arrowTecla, setArrowTecla] = useState('');
   /*
 useEffect(() => {
   const run = async () => {
@@ -21,17 +22,64 @@ useEffect(() => {
 */
 
   const handleIsRunning = () => {
-   isRunning ? setIsRunnig(false) : setIsRunnig(true);
+
+    isRunning ? setIsRunnig(false) : setIsRunnig(true);
+
   }
+
+
+  useEffect(() => {
+    
+    const StartStop = (e) => {
+     
+      e.key === 'Enter' && setIsRunnig(prev => !prev);
+
+    }
+
+    window.addEventListener('keydown', StartStop);
+    
+    return () => window.removeEventListener('keydown', StartStop)
+    
+  }, []) 
  
 
+  useEffect(() => {
+   const handleArrosTecla = (e) => {
+      switch(e.key){
+        case 'ArrowUp':
+          setDirection((prev) => (prev !== 'DOWN' ? 'UP' : prev));
+          break;
+        case 'ArrowDown':
+          setDirection((prev) => (prev !== 'UP' ? 'DOWN' : prev));
+          break;
+        case 'ArrowRight':
+          setDirection((prev) => (prev !== 'LEFT' ? 'RIGHT' : prev));
+          break;
+        case 'ArrowLeft':
+          setDirection((prev) => (prev !== 'RIGHT' ? 'LEFT' : prev));
+          break;
+          default:
+            break;
+      }
+      
+   };
+  
+     window.addEventListener('keydown', handleArrosTecla);
+  
+    return () => {
+      window.removeEventListener('keydown', handleArrosTecla);
+    }
+
+
+    
+  }, []);
 
 return (
     <>
      
      <h2 style={{fontSize: '35px',  color: 'white'}}>Snake Game 🐍</h2>
 
-     <SnakeCanvas isRunning={isRunning} direction={direction} />
+     <SnakeCanvas isRunning={isRunning} direction={direction} arrowTecla={arrowTecla} />
      <div style={{marginTop: '20px'}} className="btn-rows">
      <button  onClick={() => setDirection('UP')}>
         <img 
