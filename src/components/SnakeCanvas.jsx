@@ -1,6 +1,6 @@
 // src/components/SnakeCanvas.js
 import { useRef, useEffect, useState, use } from 'react';
-
+import confetti from "canvas-confetti";
 
 
 function SnakeCanvas({ isRunning, direction }) {
@@ -123,10 +123,31 @@ useEffect(() => {
 
               if (score > scoreLocalStorage){
                 localStorage.setItem("playScore", score)
+
+                  confetti({
+                    particleCount: 80,
+                    spread: 60,
+                    angle: 60,
+                    origin: { x: 0, y: 0.6 }
+                  });
+
+                  confetti({
+                    particleCount: 80,
+                    spread: 60,
+                    angle: 120,
+                    origin: { x: 1, y: 0.6 }
+                  });
+
+                  // 🎉 Explosión central
+                  confetti({
+                    particleCount: 100,
+                    spread: 100,
+                    origin: { y: 0.6 }
+                  });
               }
 
 
-              alert(`Game Over your score: ${score} best score: ${scoreLocalStorage}`);
+              alert(`Game Over your Score: ${score} Best Score: ${Math.max(score, scoreLocalStorage)}`);
 
               resetGame();
             }, 0);
